@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    password: ivan
+    url: jdbc:h2:mem:test
+    username: ivan
+    
+  h2:
+    console:
+      enabled: true
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+      dialect: org.hibernate.dialect.H2Dialect
+    
+
+      
+logging:
+  level:
+    org.springframework.web: ERROR
+    ru.ivan: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+   

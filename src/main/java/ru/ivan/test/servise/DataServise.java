@@ -2,7 +2,10 @@ package ru.ivan.test.servise;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,12 +15,14 @@ import org.springframework.stereotype.Component;
 
 
 import ru.ivan.test.Model.TableEntity;
+import ru.ivan.test.Model.UralModel;
 
 @Component
 public class DataServise {
 	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
+	
 	
 	public List<TableEntity> getAll () {
 		return jdbcTemplate.query("select * from testh2", new RowMapper<TableEntity> () {
@@ -43,5 +48,20 @@ public class DataServise {
 		}
 		return true;
 	}
-
+	
+	public List<List<String>> testSelect () {
+		return jdbcTemplate.query("SELECT DATE, Correspondent_Name, MAX(OUTGOING_BALANCE) AS \"MAX BALANS\" FROM URAL GROUP BY DATE, Correspondent_Name", new RowMapper<List<String>>() {
+			public List<String> mapRow (ResultSet rs, int rownumber) throws SQLException {
+				List<String> list = new ArrayList<>(); 
+				list.add(rs.getTimestamp("DATE").toString());
+				list.add(rs.getString("Correspondent_Name"));
+				list.add(rs.getString("MAX BALANS"));
+				//System.out.println(rs.getTimestamp("DATE").toString());
+				//System.out.println(rs.getString("Correspondent_Name").toString());
+				//System.out.println(rs.getString("MAX BALANS").toString());
+				return list;
+			}
+		});
+		
+	}
 }
